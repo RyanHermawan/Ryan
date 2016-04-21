@@ -1,0 +1,96 @@
+﻿@model WebUI.Models.KaryawanFormStub
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string currentController = (string)ViewContext.RouteData.Values["controller"];
+    string currentAction = (string)ViewContext.RouteData.Values["action"];
+    string backLink = "";
+
+    if (currentAction == "Create")
+    {
+        ViewBag.Title = "Add Karyawan";
+    }
+    else
+    {
+        ViewBag.Title = ViewBag.name + " | Edit";
+    }
+    backLink = Url.Action("Index");
+}
+
+@{
+    ViewBag.Title = "Form";
+}
+
+<div class="page-header">
+    <h1>@ViewBag.Title</h1>
+</div>
+@using (@Html.BeginForm(currentAction, currentController, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NamaKaryawan, new { @class = "col-xs-2 control-label" })
+        <div class="col-xs-4">
+            @Html.EditorFor(model => model.NamaKaryawan, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NamaKaryawan)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Umur, new { @class = "col-xs-2 control-label" })
+        <div class="col-xs-4">
+            @Html.EditorFor(model => model.Umur, new { id = "tanggal_lahir", htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Umur)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TanggalLahir, new { @class = "col-xs-2 control-label" })
+        <div class="col-xs-4">
+            @Html.EditorFor(model => model.TanggalLahir, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TanggalLahir)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pendidikan, new { @class = "col-xs-2 control-label" })
+        <div class="col-xs-4">
+            @Html.EditorFor(model => model.Pendidikan, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Pendidikan)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Status, new { @class = "col-xs-2 control-label" })
+        <div class="col-xs-4">
+            @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TanggalMasuk, new { @class = "col-xs-2 control-label" })
+        <div class="col-xs-4">
+            @Html.EditorFor(model => model.TanggalMasuk, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TanggalMasuk)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="@backLink" class="btn btn-link">Cancel</a>
+        </div>
+    </div>
+}
+
+@section scripts
+    {
+    <script type="text/javascript">
+        // scripts here
+        $(document).ready(function () {
+            $("#TanggalLahir").kendoDatePicker({ dateFormat: 'dd/mm/yy' });
+            $("#TanggalMasuk").kendoDatePicker({ dateFormat: 'dd/mm/yy' });
+
+            if ('@currentAction' == "Create") {
+                $("#TanggalLahir").kendoDatePicker({ value: new Date() });
+                $("#TanggalMasuk").kendoDatePicker({ value: new Date() });
+            }
+        });
+    </script>       
+}

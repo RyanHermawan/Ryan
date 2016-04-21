@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BataviaDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Whitelist" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Crew">
+          <Key>
+            <PropertyRef Name="Barcode" />
+          </Key>
+          <Property Name="Barcode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nama" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tanggal_Daftar" Type="smalldatetime" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Airport" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Company_Airways" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Crew_Whitelist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Barcode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tanggal_Awal" Type="smalldatetime" Nullable="false" />
+          <Property Name="Tanggal_Akhir" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Crew_Whitelist_Crew">
+          <End Role="Crew" Type="Self.Crew" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Crew_Whitelist" Type="Self.Crew_Whitelist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Crew">
+              <PropertyRef Name="Barcode" />
+            </Principal>
+            <Dependent Role="Crew_Whitelist">
+              <PropertyRef Name="Barcode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BataviaDBModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Crew" EntityType="Self.Crew" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Crew_Whitelist" EntityType="Self.Crew_Whitelist" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Crew_Whitelist_Crew" Association="Self.FK_Crew_Whitelist_Crew">
+            <End Role="Crew" EntitySet="Crew" />
+            <End Role="Crew_Whitelist" EntitySet="Crew_Whitelist" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BataviaDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Whitelist" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Crew">
+          <Key>
+            <PropertyRef Name="Barcode" />
+          </Key>
+          <Property Name="Barcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tanggal_Daftar" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Airport" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Company_Airways" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Crew_Whitelist" Relationship="Self.FK_Crew_Whitelist_Crew" FromRole="Crew" ToRole="Crew_Whitelist" />
+        </EntityType>
+        <EntityType Name="Crew_Whitelist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Barcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tanggal_Awal" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Tanggal_Akhir" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Crew" Relationship="Self.FK_Crew_Whitelist_Crew" FromRole="Crew_Whitelist" ToRole="Crew" />
+        </EntityType>
+        <Association Name="FK_Crew_Whitelist_Crew">
+          <End Role="Crew" Type="Self.Crew" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Crew_Whitelist" Type="Self.Crew_Whitelist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Crew">
+              <PropertyRef Name="Barcode" />
+            </Principal>
+            <Dependent Role="Crew_Whitelist">
+              <PropertyRef Name="Barcode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BataviaDB" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="Crews" EntityType="Self.Crew" />
+          <EntitySet Name="Crew_Whitelist" EntityType="Self.Crew_Whitelist" />
+          <AssociationSet Name="FK_Crew_Whitelist_Crew" Association="Self.FK_Crew_Whitelist_Crew">
+            <End Role="Crew" EntitySet="Crews" />
+            <End Role="Crew_Whitelist" EntitySet="Crew_Whitelist" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BataviaDBModelStoreContainer" CdmEntityContainer="BataviaDB">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="BataviaDBModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Whitelist" ColumnName="Whitelist" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Crews">
+            <EntityTypeMapping TypeName="BataviaDBModel.Crew">
+              <MappingFragment StoreEntitySet="Crew">
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Nama" ColumnName="Nama" />
+                <ScalarProperty Name="Tanggal_Daftar" ColumnName="Tanggal_Daftar" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Airport" ColumnName="Airport" />
+                <ScalarProperty Name="Company_Airways" ColumnName="Company_Airways" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Crew_Whitelist">
+            <EntityTypeMapping TypeName="BataviaDBModel.Crew_Whitelist">
+              <MappingFragment StoreEntitySet="Crew_Whitelist">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Tanggal_Awal" ColumnName="Tanggal_Awal" />
+                <ScalarProperty Name="Tanggal_Akhir" ColumnName="Tanggal_Akhir" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

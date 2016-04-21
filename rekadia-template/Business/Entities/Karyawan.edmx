@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="KaryawanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Pekerjaan">
+          <Key>
+            <PropertyRef Name="id_pekerjaan" />
+          </Key>
+          <Property Name="id_pekerjaan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nama_pekerjaan" Type="nvarchar(max)" />
+          <Property Name="keterangan" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbKaryawan">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nama_karyawan" Type="nvarchar(max)" />
+          <Property Name="umur" Type="int" />
+          <Property Name="tanggal_lahir" Type="datetime" />
+          <Property Name="pendidikan" Type="nvarchar(max)" />
+          <Property Name="status" Type="nvarchar(max)" />
+          <Property Name="tanggal_masuk" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="KaryawanModelStoreContainer">
+          <EntitySet Name="Pekerjaan" EntityType="Self.Pekerjaan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbKaryawan" EntityType="Self.tbKaryawan" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KaryawanModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Pekerjaan">
+          <Key>
+            <PropertyRef Name="id_pekerjaan" />
+          </Key>
+          <Property Name="id_pekerjaan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nama_pekerjaan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="keterangan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbKaryawan">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nama_karyawan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="umur" Type="Int32" />
+          <Property Name="tanggal_lahir" Type="DateTime" Precision="3" />
+          <Property Name="pendidikan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tanggal_masuk" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="Karyawan" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Pekerjaans" EntityType="Self.Pekerjaan" />
+          <EntitySet Name="tbKaryawans" EntityType="Self.tbKaryawan" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KaryawanModelStoreContainer" CdmEntityContainer="Karyawan">
+          <EntitySetMapping Name="Pekerjaans">
+            <EntityTypeMapping TypeName="KaryawanModel.Pekerjaan">
+              <MappingFragment StoreEntitySet="Pekerjaan">
+                <ScalarProperty Name="id_pekerjaan" ColumnName="id_pekerjaan" />
+                <ScalarProperty Name="nama_pekerjaan" ColumnName="nama_pekerjaan" />
+                <ScalarProperty Name="keterangan" ColumnName="keterangan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbKaryawans">
+            <EntityTypeMapping TypeName="KaryawanModel.tbKaryawan">
+              <MappingFragment StoreEntitySet="tbKaryawan">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nama_karyawan" ColumnName="nama_karyawan" />
+                <ScalarProperty Name="umur" ColumnName="umur" />
+                <ScalarProperty Name="tanggal_lahir" ColumnName="tanggal_lahir" />
+                <ScalarProperty Name="pendidikan" ColumnName="pendidikan" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="tanggal_masuk" ColumnName="tanggal_masuk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
