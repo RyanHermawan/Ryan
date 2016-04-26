@@ -41,7 +41,7 @@ namespace WebUI.Controllers
         public ActionResult Login(string ReturnUrl = null)
         {
             if (Request.IsAuthenticated)
-                return RedirectToAction("Index", "Dashboard");
+                return View("CrewCRUD");
             else
             {
                 if (ReturnUrl != null)
@@ -55,11 +55,16 @@ namespace WebUI.Controllers
 
         #region crew
 
-        [MvcSiteMapNode(Title = "Crew", ParentKey = "Dashboard", Key = "IndexCrew")]
+        //[Authorize]
+        [MvcSiteMapNode(Title = "Crew", ParentKey = "Login", Key = "IndexCrew")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CrewCRUD()
         {
-            return View();
+            if (Session["username"] == null)
+                return View("Login");
+            else
+                return View();
+            //return View();
         }
 
         public string BindingCrew()
@@ -73,10 +78,14 @@ namespace WebUI.Controllers
             return new JavaScriptSerializer().Serialize(new { total = total, data = new CrewPresentationStub().MapList(items) });
         }
 
+        //[Authorize]
         [MvcSiteMapNode(Title = "CreateCrew", ParentKey = "IndexCrew")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CreateCrew()
         {
+            if (Session["username"] == null)
+                return View("Login");
+
             CrewFormStub formStub = new CrewFormStub();
 
             return View("FormCrew", formStub);
@@ -118,10 +127,14 @@ namespace WebUI.Controllers
             }
         }
 
+        //[Authorize]
         [MvcSiteMapNode(Title = "EditCrew", ParentKey = "IndexCrew", Key = "EditCrew", PreservedRouteParameters = "id")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult EditCrew(string barcode)
         {
+            if (Session["username"] == null)
+                return View("Login");
+
             Crew crew = RepoCrew.FindByPk(barcode);
             CrewFormStub formStub = new CrewFormStub(crew);
             return View("FormCrew", formStub);
@@ -174,11 +187,15 @@ namespace WebUI.Controllers
 
         #region whitelist
 
-        [MvcSiteMapNode(Title = "Whitelist", ParentKey = "Dashboard", Key = "IndexWhitelist")]
+        //[Authorize]
+        [MvcSiteMapNode(Title = "Whitelist", ParentKey = "Login", Key = "IndexWhitelist")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CrewWhitelist()
         {
-            return View();
+            if (Session["username"] == null)
+                return View("Login");
+            else
+                return View();
         }
 
         public string BindingWhitelist()
@@ -210,10 +227,14 @@ namespace WebUI.Controllers
             return new JavaScriptSerializer().Serialize(new { total = newList.Count(), data = new CrewPresentationStub().MapList(newList) });
         }
 
+        //[Authorize]
         [MvcSiteMapNode(Title = "CreateWhitelist", ParentKey = "IndexWhitelist")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CreateWhitelist()
         {
+            if (Session["username"] == null)
+                return View("Login");
+
             WhitelistFormStub formStub = new WhitelistFormStub();
 
             List<object> newList = new List<object>();
@@ -261,10 +282,14 @@ namespace WebUI.Controllers
             }
         }
 
+        //[Authorize]
         [MvcSiteMapNode(Title = "EditWhitelist", ParentKey = "IndexWhitelist", Key = "EditWhitelist", PreservedRouteParameters = "id")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult EditWhitelist(int id)
         {
+            if (Session["username"] == null)
+                return View("Login");
+
             Crew_Whitelist white = RepoWhite.FindByPk(id);
             List<object> newList = new List<object>();
             foreach (var crew in context.Crews)
@@ -366,7 +391,7 @@ namespace WebUI.Controllers
                             ModelState.AddModelError("", "User data is incorrect!");
                     //}
                     //else
-                    //    return RedirectToAction("Index", "Dashboard");
+                    //    return RedirectToAction("Login", "Crew");
                 //}
                 //else
                 //{
