@@ -34,37 +34,22 @@ namespace WebUI.Controllers
         public CrewController(IAuthProvider authParam, ICrewRepository repoCrew, IWhitelistRepository repoWhite,
             ILogRepository repoLog)
         {
+            auth = authParam;
             RepoCrew = repoCrew;
             RepoWhite = repoWhite;
         }
-
-        public ActionResult Login(string ReturnUrl = null)
-        {
-            if (Request.IsAuthenticated)
-                return View("CrewCRUD");
-            else
-            {
-                if (ReturnUrl != null)
-                    ViewBag.ReturnUrl = ReturnUrl;
-                return View();
-            }
-        }
-
+        
         //
         // GET: /Crew/
 
         #region crew
 
-        //[Authorize]
-        [MvcSiteMapNode(Title = "Crew", ParentKey = "Login", Key = "IndexCrew")]
+        [AuthorizeAdmin(Roles = "Admin")]
+        [MvcSiteMapNode(Title = "Crew", ParentKey = "Dashboard", Key = "IndexCrew")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CrewCRUD()
         {
-            if (Session["username"] == null)
-                return View("Login");
-            else
-                return View();
-            //return View();
+            return View();
         }
 
         public string BindingCrew()
@@ -78,14 +63,11 @@ namespace WebUI.Controllers
             return new JavaScriptSerializer().Serialize(new { total = total, data = new CrewPresentationStub().MapList(items) });
         }
 
-        //[Authorize]
+        [AuthorizeAdmin(Roles = "Admin")]
         [MvcSiteMapNode(Title = "CreateCrew", ParentKey = "IndexCrew")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CreateCrew()
         {
-            if (Session["username"] == null)
-                return View("Login");
-
             CrewFormStub formStub = new CrewFormStub();
 
             return View("FormCrew", formStub);
@@ -127,14 +109,11 @@ namespace WebUI.Controllers
             }
         }
 
-        //[Authorize]
+        [AuthorizeAdmin(Roles = "Admin")]
         [MvcSiteMapNode(Title = "EditCrew", ParentKey = "IndexCrew", Key = "EditCrew", PreservedRouteParameters = "id")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult EditCrew(string barcode)
         {
-            if (Session["username"] == null)
-                return View("Login");
-
             Crew crew = RepoCrew.FindByPk(barcode);
             CrewFormStub formStub = new CrewFormStub(crew);
             return View("FormCrew", formStub);
@@ -187,15 +166,12 @@ namespace WebUI.Controllers
 
         #region whitelist
 
-        //[Authorize]
-        [MvcSiteMapNode(Title = "Whitelist", ParentKey = "Login", Key = "IndexWhitelist")]
+        [AuthorizeAdmin(Roles = "Whitelist")]
+        [MvcSiteMapNode(Title = "Whitelist", ParentKey = "Dashboard", Key = "IndexWhitelist")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CrewWhitelist()
         {
-            if (Session["username"] == null)
-                return View("Login");
-            else
-                return View();
+            return View();
         }
 
         public string BindingWhitelist()
@@ -227,14 +203,11 @@ namespace WebUI.Controllers
             return new JavaScriptSerializer().Serialize(new { total = newList.Count(), data = new CrewPresentationStub().MapList(newList) });
         }
 
-        //[Authorize]
+        [AuthorizeAdmin(Roles = "Whitelist")]
         [MvcSiteMapNode(Title = "CreateWhitelist", ParentKey = "IndexWhitelist")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult CreateWhitelist()
         {
-            if (Session["username"] == null)
-                return View("Login");
-
             WhitelistFormStub formStub = new WhitelistFormStub();
 
             List<object> newList = new List<object>();
@@ -282,14 +255,11 @@ namespace WebUI.Controllers
             }
         }
 
-        //[Authorize]
+        [AuthorizeAdmin(Roles = "Whitelist")]
         [MvcSiteMapNode(Title = "EditWhitelist", ParentKey = "IndexWhitelist", Key = "EditWhitelist", PreservedRouteParameters = "id")]
         [SiteMapTitle("Breadcrumb")]
         public ActionResult EditWhitelist(int id)
         {
-            if (Session["username"] == null)
-                return View("Login");
-
             Crew_Whitelist white = RepoWhite.FindByPk(id);
             List<object> newList = new List<object>();
             foreach (var crew in context.Crews)
@@ -349,62 +319,6 @@ namespace WebUI.Controllers
         }
         #endregion
         
-        [HttpPost]
-        public ActionResult Login(LoginModel model, string ReturnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                //if (auth.Authenticate(model.Username, model.Password))
-                //{
-                Session["username"] = model.Username;
-
-                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-                        1,
-                        model.Username,  //user id
-                        DateTime.Now,
-                        DateTime.Now.AddMinutes(60),  // expiry
-                        false,  //do not remember
-                        "/");
-                    HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName,
-                                                       FormsAuthentication.Encrypt(authTicket))
-                    {
-                        HttpOnly = true,
-                        Expires = authTicket.Expiration
-                    };
-                    //Response.Cookies.Add(cookie);
-                    Response.SetCookie(cookie);
-
-                    //if (ReturnUrl != null)
-                    //{
-                        var whitelist = context.Admins.Where(x => x.Username == model.Username &&
-                                        x.Password == model.Password)
-                                 .Select(x => x.Whitelist)
-                                 .FirstOrDefault();
-                        if (whitelist == "0")
-                        {
-                            ModelState.AddModelError("",Session["username"].ToString());
-                            return View("CrewCRUD");
-                        }
-                        else if (whitelist == "1")
-                            return View("CrewWhitelist");
-                        else
-                            ModelState.AddModelError("", "User data is incorrect!");
-                    //}
-                    //else
-                    //    return RedirectToAction("Login", "Crew");
-                //}
-                //else
-                //{
-                //    ModelState.AddModelError("", "Login data is incorrect!");
-                //}
-            }
-            return View();
-        }
-        public ActionResult Logout()
-        {
-            Session["username"] = null;
-            FormsAuthentication.SignOut();
-            return View("Login");
-        }
+        
     }
 }

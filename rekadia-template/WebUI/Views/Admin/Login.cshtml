@@ -1,7 +1,7 @@
 ﻿@model WebUI.Models.LoginModel
 
 @{
-    var currentController = (WebUI.Controllers.CrewController)ViewContext.Controller;
+    var currentController = (WebUI.Controllers.AdminController)ViewContext.Controller;
     
     ViewBag.Title = "Login";
 }
@@ -15,7 +15,7 @@
     </div>
     <div class="col-xs-6">
         @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
-        @using (@Html.BeginForm("Login", "Crew", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+        @using (@Html.BeginForm("Login", "Admin", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
             <div class="form-group clearfix">

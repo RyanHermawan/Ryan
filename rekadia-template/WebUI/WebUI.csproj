@@ -285,6 +285,7 @@
     <Compile Include="Areas\SecurityGuard\Models\SelectObject.cs" />
     <Compile Include="Areas\SecurityGuard\Models\UserViewModel.cs" />
     <Compile Include="Areas\SecurityGuard\SecurityGuardAreaRegistration.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Binders\UserLoginModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="Infrastructure\Abstract\IObjectExtender.cs" />
     <Compile Include="Infrastructure\Abstract\IProvidePrincipal.cs" />
     <Compile Include="Infrastructure\ApiCredential.cs" />
+    <Compile Include="Infrastructure\AuthorizeAdminAttribute.cs" />
     <Compile Include="Infrastructure\AuthorizeUserAttribute.cs" />
     <Compile Include="Infrastructure\BasicAuthMessageHandler.cs" />
     <Compile Include="Infrastructure\Concrete\CustomPrincipal.cs" />
@@ -1196,7 +1198,7 @@
     <Content Include="Views\Button\Primary.cshtml" />
     <Content Include="Views\KendoGrid\Index.cshtml" />
     <Content Include="Views\KendoGrid\Form.cshtml" />
-    <Content Include="Views\Crew\Login.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Crew\CrewCRUD.cshtml" />
     <Content Include="Views\Crew\CrewWhitelist.cshtml" />
     <Content Include="Views\Crew\FormCrew.cshtml" />

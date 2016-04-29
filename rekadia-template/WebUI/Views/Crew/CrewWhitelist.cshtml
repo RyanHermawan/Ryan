@@ -9,9 +9,15 @@
     <div class="btn-group pull-right">
         @Html.ActionLink("Add Whitelist", "CreateWhitelist", new { area = "" }, new { @class = "btn btn-default" })
     </div>
-    <strong>Hai, @Session["username"]</strong>
-    <br />
-    @Html.ActionLink("Sign Out", "Logout", "Crew")
+    @if (Request.IsAuthenticated)
+    {
+        <text>
+            <strong>Hello, @User.Identity.Name</strong>
+
+        </text>
+        <br />
+        @Html.ActionLink("Sign Out", "Logout", "Admin")
+    }
     <h1>@ViewBag.Title</h1>
 </div>
 <h2><b>Crew Hari Ini</b></h2>
